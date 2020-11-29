@@ -18,7 +18,8 @@ public class Guard : MonoBehaviour
 
     private void Start()
     {
-        //Create your Behaviour Tree here!
+      // tree= new B
+        
     }
 
     private void FixedUpdate()
