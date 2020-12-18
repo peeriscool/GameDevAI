@@ -384,9 +384,12 @@ namespace BTNodes
         {
         GameObject Object;
         Transform Target;
-        Transform Safelocation;
+        List<Transform> Safelocation;
         GameObject Thrower;
-         public Throw(GameObject throwable,Transform target, Transform Hidespot,GameObject thrower)
+        List<Transform> Compare = new List<Transform>();
+        GameObject projectile;
+        bool bomb = false;
+        public Throw(GameObject throwable,Transform target, List<Transform> Hidespot,GameObject thrower)
          {
             Object = throwable;
             Target = target;
@@ -395,13 +398,33 @@ namespace BTNodes
          }
          public override TaskStatus Run()
          {
-            if(Vector3.Distance(Safelocation.position,Thrower.transform.position) < 2)
+            if (Compare.Count != Safelocation.Count)
             {
-                //safe enough to throw
+                if (Vector3.Distance(Safelocation[0].position, Thrower.transform.position) < 2)
+                {
+
+                    //safe enough to throw
+                    if(!bomb)
+                    {
+                         projectile = GameObject.Instantiate(Object, Target.transform.position, Quaternion.identity);
+
+                        // projectile.GetComponent<Rigidbody>().AddForce(Target.position, ForceMode.Impulse);
+                        bomb = true;
+                    }
+                    else
+                    {
+                        if (projectile == null)
+                        {
+                            bomb = false;
+                        }
+                    }
+
+                    return TaskStatus.Failed;
+                }
             }
           return TaskStatus.Failed;
          }
-        }
+    }
     public class RunForCover : BTBaseNode
     {
         NavMeshAgent agent;

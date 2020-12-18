@@ -23,6 +23,7 @@ public class Rogue : MonoBehaviour
     private BTBaseNode tree;
     private NavMeshAgent agent;
     private Animator animator;
+    public GameObject Throwable;
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -34,7 +35,7 @@ public class Rogue : MonoBehaviour
         tree =
             
             new BTNodes.BTSelectorNode
-           (new BTNodes.BTSelectorNode(new BTNodes.RunForCover(this.gameObject, this.gameObject.GetComponent<FieldOfView>().validCovers,GameObject.Find("AI_Guard").GetComponent<FieldOfView>().validTargets, GameObject.Find("Player")), new BTNodes.Throw()), new BTNodes.BTSequenceNode(new BTNodes.BTParallelNode(1, 0, new BTNodes.DetectPosition(agent, GameObject.Find("Player"),this.gameObject), new BTNodes.PlayAnimation(animator, "Run Forward"))));
+           (new BTNodes.BTSelectorNode(new BTNodes.Throw(Throwable, GameObject.Find("AI_Guard").transform, this.gameObject.GetComponent<FieldOfView>().validCovers, this.gameObject),new BTNodes.RunForCover(this.gameObject, this.gameObject.GetComponent<FieldOfView>().validCovers,GameObject.Find("AI_Guard").GetComponent<FieldOfView>().validTargets, GameObject.Find("Player"))), new BTNodes.BTSequenceNode(new BTNodes.BTParallelNode(1, 0, new BTNodes.DetectPosition(agent, GameObject.Find("Player"),this.gameObject), new BTNodes.PlayAnimation(animator, "Run Forward"))));
     }
 
     private void FixedUpdate()

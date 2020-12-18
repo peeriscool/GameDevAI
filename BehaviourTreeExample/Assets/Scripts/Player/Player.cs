@@ -55,6 +55,15 @@ public class Player : MonoBehaviour, IDamageable
 
         bool isMoving = hor != 0 || vert != 0;
         ChangeAnimation(isMoving ? "Walk Crouch" : "Crouch Idle", isMoving ? 0.05f : 0.15f);
+
+        if(Input.GetKey(KeyCode.Q))
+        {
+            Time.timeScale = 0.1f;
+        }
+        if (Input.GetKey(KeyCode.E))
+        {
+            Time.timeScale = 1f;
+        }
     }
 
 
