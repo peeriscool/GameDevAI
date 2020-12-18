@@ -129,8 +129,8 @@ namespace BTNodes
             }
             if(numRequiredToFail > 0 && numChildrenFailed >= numRequiredToFail)
             {
-                return TaskStatus.Failed;
                 Debug.Log("ParrallelNode fail");
+                return TaskStatus.Failed;
             }
             return TaskStatus.Running;
         }
@@ -269,16 +269,12 @@ namespace BTNodes
                 return TaskStatus.Failed;
             }
             Agent.SetDestination(playerLocationList[0].position);
-            if(!Agent.hasPath)
+           // Debug.Log(Vector3.Distance(playerLocationList[0].position, Enemy.transform.position));
+            if (Vector3.Distance(playerLocationList[0].position, Enemy.transform.position) < 2)
             {
-                animator.Play(AnimationName);
-                if( Player.transform.position.x > Enemy.transform.position.x-5 && Player.transform.position.y > Enemy.transform.position.y-5) //pretty jank to be honest
-             // if( Vector3.Distance(Player.transform.position, Enemy.transform.position) < 3)                                                //alternative
-                {
+                    animator.Play(AnimationName); 
                     Playerscript.TakeDamage(Enemy, 40);
-                    return TaskStatus.Success;
-                }
-                
+                    return TaskStatus.Success; 
             }
 
             return TaskStatus.Running;
@@ -324,16 +320,23 @@ namespace BTNodes
     public class DetectPosition : BTBaseNode //fix new positions
     {
         NavMeshAgent guardmesh;
-        Vector3 follow;
-        public DetectPosition(NavMeshAgent guard, Vector3 pickuplocation)
+        GameObject follow;
+        GameObject MyLocation;
+        public DetectPosition(NavMeshAgent guard, GameObject location,GameObject myLocation)
         {
-            follow = pickuplocation;
+            follow = location;
             guardmesh = guard;
+            MyLocation = myLocation;
+
         }
         public override TaskStatus Run()
         {
-            guardmesh.SetDestination(follow);
-
+          //  Debug.Log(Vector3.Distance(MyLocation.transform.position, follow.transform.position));
+            if (Vector3.Distance(MyLocation.transform.position, follow.transform.position) > 2)
+            {
+                guardmesh.SetDestination(follow.transform.position);
+                return TaskStatus.Running;
+            }
             return TaskStatus.Failed;
         }
     }
@@ -378,10 +381,77 @@ namespace BTNodes
         }
     }
         public class Throw : BTBaseNode
+        {
+        GameObject Object;
+        Transform Target;
+        Transform Safelocation;
+        GameObject Thrower;
+         public Throw(GameObject throwable,Transform target, Transform Hidespot,GameObject thrower)
+         {
+            Object = throwable;
+            Target = target;
+            Safelocation = Hidespot;
+            Thrower = thrower;
+         }
+         public override TaskStatus Run()
+         {
+            if(Vector3.Distance(Safelocation.position,Thrower.transform.position) < 2)
+            {
+                //safe enough to throw
+            }
+          return TaskStatus.Failed;
+         }
+        }
+    public class RunForCover : BTBaseNode
     {
+        NavMeshAgent agent;
+        GameObject Runner;
+        List<Transform> Vision;
+        List<Transform> Compare;
+        List<Transform> EnemiesVision;
+        GameObject Player;
+        public RunForCover(GameObject runner,List <Transform> visablelocation, List<Transform> enemiesVision,GameObject player )
+        {
+            Runner = runner;
+            agent = runner.GetComponent<NavMeshAgent>();
+            Vision = visablelocation;
+            Compare = new List<Transform>();
+            EnemiesVision = enemiesVision;
+            Player = player;
+        }
         public override TaskStatus Run()
         {
-            throw new System.NotImplementedException();
+            if(Compare.Count != Vision.Count)
+            {
+                NavMeshHit hit = new NavMeshHit();
+                hit.position = Vision[0].position;
+                if(agent.FindClosestEdge(out hit))
+                {
+                    DrawCircle( Vision[0].position, hit.distance, Color.red);
+                    //if player is in sight of enemy
+                    //navmesh.setdestiantion
+                    foreach(Transform target in EnemiesVision)
+                    {
+                        if(target == Player.transform)
+                        {
+                            agent.SetDestination(Vision[0].position);
+                            return TaskStatus.Success;
+                        }
+                    }
+                }
+            }
+            return TaskStatus.Failed;
+        }
+        void DrawCircle(Vector3 center, float radius, Color color)
+        {
+            Vector3 prevPos = center + new Vector3(radius, 0, 0);
+            for (int i = 0; i < 30; i++)
+            {
+                float angle = (float)(i + 1) / 30.0f * Mathf.PI * 2.0f;
+                Vector3 newPos = center + new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
+                Debug.DrawLine(prevPos, newPos, color);
+                prevPos = newPos;
+            }
         }
     }
 }

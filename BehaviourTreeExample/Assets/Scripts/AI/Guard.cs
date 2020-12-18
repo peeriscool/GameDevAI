@@ -27,8 +27,8 @@ public class Guard : MonoBehaviour
     {
         Vector3[] patrol = new[] {new Vector3(0,0,0), new Vector3(6,0,6), new Vector3(-6, 0, 6), new Vector3(-6, 0, -6), new Vector3(6, 0, -6), };
         //new BTNodes.BTPatrol(this.gameObject,patrol,animator, "Run Forward");
-        tree = new BTNodes.Attack(fov.validTargets,this.gameObject,animator,"Kick",GameObject.Find("Player"));
-           // new BTNodes.BTSelectorNode(new BTNodes.BTInverterNode(new BTNodes.BTGetObject(this.gameObject, animator, "Run Forward")), new BTNodes.BTPatrol(this.gameObject, patrol, animator, "Run Forward"));
+        tree = 
+            new BTNodes.BTSelectorNode(new BTNodes.Attack(fov.validTargets, this.gameObject, animator, "Kick", GameObject.Find("Player")),new BTNodes.BTInverterNode(new BTNodes.BTGetObject(this.gameObject, animator, "Run Forward")), new BTNodes.BTPatrol(this.gameObject, patrol, animator, "Run Forward"));
 
 
 
@@ -67,3 +67,5 @@ public class Guard : MonoBehaviour
 //  new BTNodes.BTSequenceNode(new BTNodes.BTParallelNode(2, 0, new BTNodes.Pickup(this.gameObject, new Vector3(10, 0, 10), this.transform.position), new BTNodes.PlayAnimation(animator, "Run Forward")));
 // obj pickup tree
 //new BTNodes.BTSelectorNode(new BTNodes.BTParallelNode(1, 0, new BTNodes.Pickup(this.gameObject,new Vector3(10,0,10),this.gameObject.transform.position), new BTNodes.PlayAnimation(animator, "Run Forward")));
+// attack node
+//new BTNodes.Attack(fov.validTargets,this.gameObject,animator,"Kick",GameObject.Find("Player"));

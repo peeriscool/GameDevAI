@@ -57,10 +57,6 @@ public class Player : MonoBehaviour, IDamageable
         ChangeAnimation(isMoving ? "Walk Crouch" : "Crouch Idle", isMoving ? 0.05f : 0.15f);
     }
 
-    private void FixedUpdate()
-    {
-        
-    }
 
     public void TakeDamage(GameObject attacker, int damage)
     {
