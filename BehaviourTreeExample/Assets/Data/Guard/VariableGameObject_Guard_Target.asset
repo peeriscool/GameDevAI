@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: VariableGameObject_Guard_Target
   m_EditorClassIdentifier: 
   autoReset: 1
-  value: {fileID: 0}
+  value: {fileID: 3969379290464047463, guid: 15470671b5be14d4bb365b80b14ae9e0, type: 3}

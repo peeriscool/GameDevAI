@@ -18,7 +18,8 @@ public class Rogue : MonoBehaviour
 
     private void Start()
     {
-        //TODO: Create your Behaviour tree here
+        tree = new BTNodes.BTSelectorNode
+           (new BTNodes.BTSequenceNode(new BTNodes.BTParallelNode(2, 0, new BTNodes.DetectPosition(agent, GameObject.Find("akai_e_espiritu_ragdoll").transform.position), new BTNodes.PlayAnimation(animator, "Run Forward"))));//,
     }
 
     private void FixedUpdate()
