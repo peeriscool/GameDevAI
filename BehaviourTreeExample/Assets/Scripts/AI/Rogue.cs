@@ -32,10 +32,7 @@ public class Rogue : MonoBehaviour
 
     private void Start()
     {
-        tree =
-            
-            new BTNodes.BTSelectorNode
-           (new BTNodes.BTSelectorNode(new BTNodes.Throw(Throwable, GameObject.Find("AI_Guard").transform, this.gameObject.GetComponent<FieldOfView>().validCovers, this.gameObject),new BTNodes.RunForCover(this.gameObject, this.gameObject.GetComponent<FieldOfView>().validCovers,GameObject.Find("AI_Guard").GetComponent<FieldOfView>().validTargets, GameObject.Find("Player"))), new BTNodes.BTSequenceNode(new BTNodes.BTParallelNode(1, 0, new BTNodes.DetectPosition(agent, GameObject.Find("Player"),this.gameObject), new BTNodes.PlayAnimation(animator, "Run Forward"))));
+        tree = new BTNodes.BTSelectorNode(new BTNodes.BTSelectorNode(new BTNodes.Throw(Throwable, GameObject.Find("AI_Guard").transform, this.gameObject.GetComponent<FieldOfView>().validCovers, this.gameObject),new BTNodes.RunForCover(this.gameObject, this.gameObject.GetComponent<FieldOfView>().validCovers,GameObject.Find("AI_Guard").GetComponent<FieldOfView>().validTargets, GameObject.Find("Player"))), new BTNodes.BTSequenceNode(new BTNodes.BTParallelNode(1, 0, new BTNodes.DetectPosition(agent, GameObject.Find("Player"),this.gameObject), new BTNodes.PlayAnimation(animator, "Run Forward"))));
     }
 
     private void FixedUpdate()
